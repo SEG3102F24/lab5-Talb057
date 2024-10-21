@@ -3,13 +3,14 @@ import { AbstractControl, FormBuilder, Validators, ReactiveFormsModule } from "@
 import {EmployeeService} from "../service/employee.service";
 import { Router, RouterLink } from "@angular/router";
 import {Employee} from "../model/employee";
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-employee',
     templateUrl: './employee.component.html',
     styleUrls: ['./employee.component.css'],
     standalone: true,
-    imports: [RouterLink, ReactiveFormsModule]
+    imports: [CommonModule, RouterLink, ReactiveFormsModule]
 })
 export class EmployeeComponent {
   private builder: FormBuilder = inject(FormBuilder);
@@ -38,8 +39,17 @@ export class EmployeeComponent {
       this.salary.value,
       this.gender.value,
       this.email.value);
-    this.employeeService.addEmployee(employee);
-    this.employeeForm.reset();
-    this.router.navigate(['/employees']).then(() => {});
+      this.employeeService.addEmployee(employee)
+      const employeeData = {
+        name: employee.name,
+        dateOfBirth: employee.dateOfBirth,
+        city: employee.city,
+        salary: employee.salary,
+        gender: employee.gender,
+        email: employee.email
+      };
+      this.employeeService.addEmployee(employeeData);
+      this.employeeForm.reset();
+      this.router.navigate(['/employees']).then(() => {});
   }
 }
